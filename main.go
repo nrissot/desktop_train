@@ -1,0 +1,103 @@
+package main
+
+import (
+	"log"
+
+	"github.com/hajimehoshi/ebiten/v2"
+)
+
+type Game struct {
+	Mouse_x     int
+	Mouse_y     int
+	SpriteSet   *Sprites
+	ScreenWidth int
+	Train       *Train
+	Tracks      []*ebiten.Image
+}
+
+func (g *Game) Update() error {
+	g.Mouse_x, g.Mouse_y = ebiten.CursorPosition()
+
+	if g.Train.X <= -g.Train.Length {
+		newTrain := GenerateTrain(g.SpriteSet)
+		newTrain.X = g.ScreenWidth + newTrain.Length
+		g.Train = newTrain
+	} else {
+		g.Train.X -= g.Train.Speed
+	}
+
+	return nil
+}
+
+func (g *Game) Draw(screen *ebiten.Image) {
+	for i, tile := range g.Tracks {
+		opts := ebiten.DrawImageOptions{}
+		if g.Mouse_y >= 0 && g.Mouse_y <= 32 {
+			opts.ColorScale.ScaleAlpha(.25)
+		}
+		opts.GeoM.Translate(float64(i*16), 0)
+		screen.DrawImage(tile, &opts)
+	}
+
+	currentOffset := 0
+	for _, wagon := range g.Train.Wagons {
+		opts := ebiten.DrawImageOptions{}
+		// confusing, the sprites are flipped by default, so wagon.Flip actually mean "DO NOT FLIP"
+		// TODO switch it around ?
+		if wagon.Flip {
+			opts.GeoM.Scale(1, 1)
+			opts.GeoM.Translate(-float64(wagon.Length), 0)
+		} else {
+			opts.GeoM.Scale(-1, 1)
+		}
+
+		opts.GeoM.Translate(float64(g.Train.X+(currentOffset)+wagon.Length), 0)
+		currentOffset += wagon.Length
+
+		if g.Mouse_y >= 0 && g.Mouse_y <= 32 {
+			opts.ColorScale.ScaleAlpha(.25)
+		}
+
+		screen.DrawImage(wagon.Sprite, &opts)
+		if wagon.Tagged {
+			screen.DrawImage(wagon.Tag, &opts)
+		}
+	}
+	// ebitenutil.DebugPrint(screen, fmt.Sprintf("tps:%v fps:%v", ebiten.ActualTPS(), ebiten.ActualFPS()))
+}
+
+func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeight int) {
+	return outsideWidth, outsideHeight
+}
+
+func main() {
+	monitor_width, monitor_height := ebiten.Monitor().Size()
+
+	window_width := monitor_width
+	window_height := 32
+	window_y_offset := 39 //taskbar height = 40
+
+	ebiten.SetWindowSize(window_width, window_height)
+	ebiten.SetWindowTitle("Hello, World!")
+
+	ebiten.SetWindowMousePassthrough(true)
+	ebiten.SetWindowDecorated(false)
+	ebiten.SetWindowFloating(true)
+
+	ebiten.SetWindowPosition(0, monitor_height-window_height-window_y_offset)
+
+	s := loadSprites()
+	train := GenerateTER(s)
+	train.X = window_width + train.Length
+
+	g := Game{
+		SpriteSet:   s,
+		Train:       train,
+		ScreenWidth: window_width,
+		Tracks:      GenerateTracks(s, window_width),
+	}
+
+	if err := ebiten.RunGameWithOptions(&g, &ebiten.RunGameOptions{ScreenTransparent: true}); err != nil {
+		log.Fatal(err)
+	}
+}
