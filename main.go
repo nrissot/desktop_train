@@ -1,6 +1,7 @@
 package main
 
 import (
+	"image"
 	"log"
 
 	"github.com/hajimehoshi/ebiten/v2"
@@ -71,24 +72,30 @@ func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeigh
 }
 
 func main() {
+	var config Config
+	config.Load()
+
 	monitor_width, monitor_height := ebiten.Monitor().Size()
 
 	window_width := monitor_width
 	window_height := 32
-	window_y_offset := 39 //taskbar height = 40
-
-	ebiten.SetWindowSize(window_width, window_height)
-	ebiten.SetWindowTitle("Hello, World!")
 
 	ebiten.SetWindowMousePassthrough(true)
 	ebiten.SetWindowDecorated(false)
 	ebiten.SetWindowFloating(true)
 
-	ebiten.SetWindowPosition(0, monitor_height-window_height-window_y_offset)
+	ebiten.SetWindowPosition(0, monitor_height-window_height-config.Window_y_offset)
 
 	s := loadSprites()
 	train := GenerateTER(s)
 	train.X = window_width + train.Length
+
+	ebiten.SetWindowSize(window_width, window_height)
+	ebiten.SetWindowTitle("Tchoo tchooo !")
+	icon_engine := s.IndustrialEngineVariants[0]
+
+	// TODO, multiple sizes could be nice
+	ebiten.SetWindowIcon([]image.Image{icon_engine.SubImage(icon_engine.Bounds())})
 
 	g := Game{
 		SpriteSet:   s,
