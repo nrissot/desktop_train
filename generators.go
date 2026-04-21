@@ -185,16 +185,22 @@ func GenerateTrain(s *Sprites) *Train {
 	}
 }
 
-func GenerateTracks(s *Sprites, screenWidth int) []*ebiten.Image {
+func GenerateTracks(s *Sprites, screenWidth int, onlyCleanTracks bool) []*ebiten.Image {
 	// 40% chance of mutation for each track tile
 	tracks := []*ebiten.Image{}
 
 	tile_count := screenWidth / 16
-	for range tile_count {
-		if rand.Int()%10 < 6 {
+	if onlyCleanTracks {
+		for range tile_count {
 			tracks = append(tracks, s.TracksBase)
-		} else {
-			tracks = append(tracks, _choose_one(s.TracksVariants))
+		}
+	} else {
+		for range tile_count {
+			if rand.Int()%10 < 6 {
+				tracks = append(tracks, s.TracksBase)
+			} else {
+				tracks = append(tracks, _choose_one(s.TracksVariants))
+			}
 		}
 	}
 	return tracks

@@ -31,13 +31,15 @@ func (g *Game) Update() error {
 }
 
 func (g *Game) Draw(screen *ebiten.Image) {
-	for i, tile := range g.Tracks {
-		opts := ebiten.DrawImageOptions{}
-		if g.Mouse_y >= 0 && g.Mouse_y <= 32 {
-			opts.ColorScale.ScaleAlpha(.25)
+	if g.Tracks != nil {
+		for i, tile := range g.Tracks {
+			opts := ebiten.DrawImageOptions{}
+			if g.Mouse_y >= 0 && g.Mouse_y <= 32 {
+				opts.ColorScale.ScaleAlpha(.25)
+			}
+			opts.GeoM.Translate(float64(i*16), 0)
+			screen.DrawImage(tile, &opts)
 		}
-		opts.GeoM.Translate(float64(i*16), 0)
-		screen.DrawImage(tile, &opts)
 	}
 
 	currentOffset := 0
@@ -101,7 +103,12 @@ func main() {
 		SpriteSet:   s,
 		Train:       train,
 		ScreenWidth: window_width,
-		Tracks:      GenerateTracks(s, window_width),
+	}
+
+	if config.Tracks_Visible {
+		g.Tracks = GenerateTracks(s, window_width, config.Only_Clean_Tracks)
+	} else {
+		g.Tracks = nil
 	}
 
 	if err := ebiten.RunGameWithOptions(&g, &ebiten.RunGameOptions{ScreenTransparent: true}); err != nil {

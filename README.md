@@ -32,3 +32,9 @@ go build
 ```
 
 and yipie, you did it :)
+
+## TODO
+
+- [ ] Embed executable icon
+- [ ] FPS / TPS in config
+- [ ] More graffiti

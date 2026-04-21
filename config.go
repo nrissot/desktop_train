@@ -7,7 +7,9 @@ import (
 )
 
 type Config struct {
-	Window_y_offset int
+	Window_y_offset   int
+	Only_Clean_Tracks bool
+	Tracks_Visible    bool
 }
 
 func (c Config) Save() {
@@ -31,6 +33,8 @@ func (c *Config) Load() {
 		if os.IsNotExist(err) {
 			log.Default().Writer().Write([]byte("file does not exist, creating a new one\n"))
 			c.Window_y_offset = 39
+			c.Only_Clean_Tracks = false
+			c.Tracks_Visible = true
 			c.Save()
 			return
 		}
