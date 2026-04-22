@@ -14,15 +14,22 @@ type Game struct {
 	ScreenWidth int
 	Train       *Train
 	Tracks      []*ebiten.Image
+	LogStats    bool
+	GameStats   *Stats
 }
 
 func (g *Game) Update() error {
 	g.Mouse_x, g.Mouse_y = ebiten.CursorPosition()
 
 	if g.Train.X <= -g.Train.Length {
+		if g.LogStats {
+			g.GameStats.Train_Counts += 1
+			g.GameStats.Save()
+		}
 		newTrain := GenerateTrain(g.SpriteSet)
 		newTrain.X = g.ScreenWidth + newTrain.Length
 		g.Train = newTrain
+
 	} else {
 		g.Train.X -= g.Train.Speed
 	}
@@ -99,10 +106,18 @@ func main() {
 	// TODO, multiple sizes could be nice
 	ebiten.SetWindowIcon([]image.Image{icon_engine.SubImage(icon_engine.Bounds())})
 
+	var stats *Stats = &Stats{}
+
+	if config.Log_Statistics {
+		stats.Load()
+	}
+
 	g := Game{
 		SpriteSet:   s,
 		Train:       train,
 		ScreenWidth: window_width,
+		LogStats:    config.Log_Statistics,
+		GameStats:   stats,
 	}
 
 	if config.Tracks_Visible {

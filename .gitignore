@@ -1,2 +1,8 @@
+# compiled executable (TODO: add them)
 *.exe
-config.json
+
+# my config
+.desktop_train/
+
+# itchio page's graphic
+itch-io*
