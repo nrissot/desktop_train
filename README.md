@@ -33,6 +33,8 @@ Then, you can simply run
 go build
 ```
 
+(on linux, Ebitengine require the gcc C compiler, and extra dependancy. please check out [this install guide](https://ebitengine.org/en/documents/install.html?os=linux) to learn more)
+
 and yipie, you did it :) double-click on the executable or execute it from your terminal and that's it, enjoy the trains
 
 
