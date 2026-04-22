@@ -20,7 +20,7 @@ Current supported os/architectures:
 - [`linux/amd64`](https://github.com/nrissot/desktop_train/releases/download/v1.0/desktop_train-linux-amd64)
 - [`windows/amd64`](https://github.com/nrissot/desktop_train/releases/download/v1.0/desktop_train-windows-amd64.exe)
 
-> Huge thanks to [@Aminmiri82](https://github.com/Aminmiri82) for providing the darwin versions <3
+> Huge thanks to [Yara](https://github.com/Aminmiri82) for providing the Mac versions <3
 
 ## Building from source
 To build this project from source, you will need a go installation version 1.24.0 or above. you can follow the instruction on  [the official go.dev website](https://go.dev/doc/install) to install go. (if you dont already have it on your machine)
