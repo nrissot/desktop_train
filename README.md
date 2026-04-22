@@ -10,10 +10,20 @@ This project was made without the use of AI.
 
 ![](/assets_src/screenshot.png)
 
-## Building from source
-This project is not compiled, you need to build it yourself.
+## Downloading the executables
+You can download the executable from the [latest release](https://github.com/nrissot/desktop_train/releases/latest)
 
-To use this project, you will need a go installation version 1.24.0 or above. you can follow the instruction on  [the official go.dev website](https://go.dev/doc/install) to install go. (if you dont already have it on your machine)
+Current supported os/architectures:
+- [`darwin/amd64`](https://github.com/nrissot/desktop_train/releases/download/v1.0/desktop_train-darwin-amd64)
+- [`darwin/arm64`](https://github.com/nrissot/desktop_train/releases/download/v1.0/desktop_train-darwin-arm64)
+- [`darwin/universal`](https://github.com/nrissot/desktop_train/releases/download/v1.0/desktop_train-darwin-universal)
+- [`linux/amd64`](https://github.com/nrissot/desktop_train/releases/download/v1.0/desktop_train-linux-amd64)
+- [`windows/amd64`](https://github.com/nrissot/desktop_train/releases/download/v1.0/desktop_train-windows-amd64.exe)
+
+> Huge thanks to [@Aminmiri82](https://github.com/Aminmiri82) for providing the darwin versions <3
+
+## Building from source
+To build this project from source, you will need a go installation version 1.24.0 or above. you can follow the instruction on  [the official go.dev website](https://go.dev/doc/install) to install go. (if you dont already have it on your machine)
 
 > you can type
 > ```go version```
@@ -33,12 +43,12 @@ Then, you can simply run
 go build
 ```
 
-(on linux, Ebitengine require the gcc C compiler, and extra dependancy. please check out [this install guide](https://ebitengine.org/en/documents/install.html?os=linux) to learn more)
+> (Notes): (on linux, Ebitengine require the gcc C compiler, and extra dependancy. please check out [this install guide](https://ebitengine.org/en/documents/install.html?os=linux) to learn more)
 
 and yipie, you did it :) double-click on the executable or execute it from your terminal and that's it, enjoy the trains
 
 
-## Config
+## Configs / Stats
 upon the first launch of the app, it'll create a `.desktop_train/` directory. This directory contains two files `config.json` and `stats.json`.
 
 the `config.json` file contains 4 fields:

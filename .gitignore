@@ -1,8 +1,9 @@
-# compiled executable (TODO: add them)
+# compiled executable (available in the release)
 *.exe
+builds/
 
 # my config
 .desktop_train/
 
 # itchio page's graphic
-itch-io*
+itch-io/
